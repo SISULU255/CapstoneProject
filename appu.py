@@ -49,13 +49,17 @@ if predict:
         # One-hot encode the month
         month_num = month[0]
         month_columns = [f"Month_{i}" for i in range(1, 13)]
-        month_data = {col: [1 if int(col.split("_")[1]) == month_num else 0] for col in month_columns}
-        
+        month_data = {col: 0 for col in month_columns}
+        month_data[f"Month_{month_num}"] = 1
+
         # Create input DataFrame
         input_data = pd.DataFrame({
             'Year': [year],
             **month_data
         })
+
+        # Ensure correct column order
+        input_data = input_data[['Year'] + month_columns]
 
         # Make prediction
         prediction = model.predict(input_data)
@@ -124,6 +128,5 @@ with tab2:
 st.markdown("""
 ---
 🧠 *Model based on historical data from 2000 to 2020. For educational and exploratory purposes.
-     For more accurate predictions, more sophisticated models and additional climate factors would be needed
-    Thank you for understanding*
+     For more accurate predictions, more sophisticated models and additional climate factors would be needed.*
 """)
